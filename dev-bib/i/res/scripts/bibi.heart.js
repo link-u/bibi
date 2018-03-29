@@ -359,8 +359,12 @@ L.loadContainer = function() {
 
 
 L.processContainer = function(Doc) {
-    B.Package.Path = Doc.getElementsByTagName("rootfile")[0].getAttribute("full-path");
-    B.Package.Dir  = B.Package.Path.replace(/\/?[^\/]+$/, "");
+    try {
+        B.Package.Path = Doc.getElementsByTagName("rootfile")[0].getAttribute("full-path");
+        B.Package.Dir  = B.Package.Path.replace(/\/?[^\/]+$/, "");
+    } catch (ErrorMessage) {
+        O.error(ErrorMessage);
+    }
 };
 
 
@@ -2789,13 +2793,13 @@ I.createMenu.createPanelSwitch = function() {
     I.PanelSwitch = I.createButtonGroup({ Area: I.Menu.L, Sticky: true }).addButton({
         Type: "toggle",
         Labels: {
-            default: { default: 'Open Index', ja: '目次を開く' },
-            active:  { default: 'Close Index', ja: '目次を閉じる' }
+            default: { default: 'Close Viewer', ja: '閉じる' },
+            active:  { default: 'toji no', ja: 'とじの' }
         },
         Help: true,
-        Icon: '<span class="bibi-icon bibi-icon-toggle-panel"><span class="bar-1"></span><span class="bar-2"></span><span class="bar-3"></span></span>',
+        Icon: '<span class="bibi-icon bibi-icon-back"></span>',
         action: function() {
-            I.Panel.toggle();
+            M.sendEventToNative('close');
         }
     });
     E.add("bibi:opened-panel",  function() { I.setUIState(I.PanelSwitch, "active"); });
@@ -2877,19 +2881,6 @@ I.createMenu.createSettingMenu.createViewModeSection = function() {
                     Notes: true,
                     Icon: Icon["horizontal"],
                     Value: "horizontal",
-                    action: changeView
-                },
-                {
-                    Type: "radio",
-                    Labels: {
-                        default: {
-                            default: '<span class="non-visual-in-label">Layout:</span> All Pages <small>(Vertical Scroll)</small>',
-                            ja: '全ページ表示<small>（縦スクロール移動）</small>'
-                        }
-                    },
-                    Notes: true,
-                    Icon: Icon["vertical"],
-                    Value: "vertical",
                     action: changeView
                 }
             ]
@@ -4418,6 +4409,7 @@ O.error = function(Msg) {
     sML.removeClass(O.HTML, "loading");
     sML.removeClass(O.HTML, "waiting");
     E.dispatch("bibi:x_x", Msg);
+    M.sendEventToNative('read_error');
     O.log(Msg, "-x");
     O.log.Depth = 1;
 };
@@ -4433,6 +4425,7 @@ O.download = function(URI, MimeType) {
         var XHR = new XMLHttpRequest();
         if(MimeType) XHR.overrideMimeType(MimeType);
         XHR.open('GET', URI, true);
+        XHR.timeout = 10000;
         XHR.onloadend = function() {
             XHR.status === 200 ? resolve(XHR) : reject(XHR);
         };
@@ -4840,6 +4833,15 @@ M.receive = function(Data) {
 M.gate = function(Eve) {
     if(!Eve || !Eve.data) return;
     for(var l = S["trustworthy-origins"].length, i = 0; i < l; i++) if(S["trustworthy-origins"][i] == Eve.origin) return M.receive(Eve.data);
+};
+
+M.sendEventToNative = function(methodName) {
+    if (sML.OS.Android) {
+      android[methodName]();
+    } else if (sML.OS.iOS) {
+      window.webkit.messageHandlers[methodName].postMessage(methodName);
+    }
+    console.log(navigator.userAgent, methodName);
 };
 
 

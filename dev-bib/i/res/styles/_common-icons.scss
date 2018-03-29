@@ -220,7 +220,8 @@ $shape-spread-height_in-subpanel: $shape-item-height_in-subpanel;
 .bibi-icon-setting,
 .bibi-icon-share,
 .bibi-icon-toggle-fullscreen,
-.bibi-icon-open-newwindow {
+.bibi-icon-open-newwindow,
+.bibi-icon-back {
 	text-decoration: none;
 	&:before {
 		left: 0;
@@ -263,6 +264,14 @@ $shape-spread-height_in-subpanel: $shape-item-height_in-subpanel;
 		@include font-icon("ElegantIcons");
 		content: "\e0a0"; // social_share
 		font-size: $icon-size * 16/31;
+	}
+}
+
+.bibi-icon-back {
+	&:before {
+		@include font-icon("Material Icons");
+		content: "\e5c4";
+		font-size: $icon-size * 19/31;
 	}
 }
 
@@ -602,9 +611,7 @@ $icon-color_active_border: darken(pink, 5%);
 .bibi-icon-Facebook   { @include fa-icon-SNS("\f082", rgb(58,89,153)); }
 .bibi-icon-GooglePlus { @include fa-icon-SNS("\f0d4", rgb(219,68,55)); }
 
-.bibi-icon-code       { @include fa-icon("\f121", rgb(128,160,0)); } 
+.bibi-icon-code       { @include fa-icon("\f121", rgb(128,160,0)); }
 .bibi-icon-anchor     { @include fa-icon("\f13d", navy); }
 
 .bibi-icon-colorless  { &:before { color: inherit; } }
-
-
