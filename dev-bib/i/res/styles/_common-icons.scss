@@ -450,7 +450,7 @@ $icon-color_active_border: darken(pink, 5%);
 // - Default
 // --------------------------------------------------------------------------------
 
-.bibi-icon {
+.bibi-icon, .deactivate .bibi-button.active .bibi-icon {
 	@include colour-icons(
 		$icon-color_font-paint,
 		$icon-color_font-outline,
@@ -609,7 +609,7 @@ $icon-color_active_border: darken(pink, 5%);
 
 .bibi-icon-Twitter    { @include fa-icon-SNS("\f081", rgb(29,161,242)); }
 .bibi-icon-Facebook   { @include fa-icon-SNS("\f082", rgb(58,89,153)); }
-.bibi-icon-GooglePlus { @include fa-icon-SNS("\f0d4", rgb(219,68,55)); }
+.bibi-icon-LINE   { @include fa-icon-SNS("", rgb(90,230,40)); }
 
 .bibi-icon-code       { @include fa-icon("\f121", rgb(128,160,0)); }
 .bibi-icon-anchor     { @include fa-icon("\f13d", navy); }

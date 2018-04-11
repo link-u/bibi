@@ -113,7 +113,7 @@ Bibi.initialize = function() {
     }
 
     // Say Welcome!
-    I.note("Welcome!");
+    I.note("Loading...");
 
     // Extensions
     X.initialize();
@@ -2989,6 +2989,7 @@ I.createButtonGroup = function(Par) { // classifies ButtonGroup
     var ClassName = ["bibi-buttongroup"];
     if(Par.Tiled) ClassName.push("bibi-tiledbuttongroup");
     if(Par.Sticky) ClassName.push("sticky");
+    if(Par.Deactivate) ClassName.push("deactivate");
     Par.className = ClassName.join(" ");
     Par.IsButtonGroup = true;
     var ButtonGroup = Par.Area.appendChild(sML.create("ul", Par));

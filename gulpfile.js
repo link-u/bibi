@@ -34,6 +34,7 @@ S.Extensions = [
     "jatex",
     "overreflow",
     "share",
+    "shareandroid",
     "unaccessibilizer",
     "unzipper"
 ];
