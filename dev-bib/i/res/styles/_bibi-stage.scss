@@ -41,6 +41,7 @@ body {
 	height: 100%;
 	background: transparent no-repeat center center;
 	transition: opacity .25s ease;
+	-webkit-touch-callout: none;
 }
 
 html.WebKit, html.Blink {
