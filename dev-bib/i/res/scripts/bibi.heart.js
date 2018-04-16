@@ -524,13 +524,14 @@ L.processPackageDocument = function(Doc) {
 
     if(S["use-cookie"]) {
         var BibiCookie = O.Cookie.remember(O.RootPath);
-        var BookCookie = O.Cookie.remember(B.ID);
+        // マンガUP!ビューワーでは読み返し時に表示位置を記憶せず1ページ目に遷移させる
+        // var BookCookie = O.Cookie.remember(B.ID);
         if(BibiCookie) {
             if(!U["reader-view-mode"] && BibiCookie.RVM) S["reader-view-mode"] = BibiCookie.RVM;
         }
-        if(BookCookie) {
-            if(!U["to"] && BookCookie.Position) S["to"] = BookCookie.Position;
-        }
+        // if(BookCookie) {
+        //     if(!U["to"] && BookCookie.Position) S["to"] = BookCookie.Position;
+        // }
     }
 
     S.update();
