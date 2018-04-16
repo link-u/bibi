@@ -1031,7 +1031,11 @@ L.postprocessItem = function(Item) {
     if(S["epub-additional-stylesheet"]) {
         Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: S["epub-additional-stylesheet"] }));
     } else {
-        Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "res/styles/epub-additional.css" }));
+        if (sML.OS.iOS) {
+            Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "res/styles/epub-additional-ios.css" }));
+        } else {
+            Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "res/styles/epub-additional.css" }));
+        }
     }
     if(S["epub-additional-script"])     Item.Head.appendChild(sML.create("script", { src: S["epub-additional-script"] }));
 
