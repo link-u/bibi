@@ -2784,7 +2784,7 @@ I.createMenu = function() {
     if(O.FullscreenEnabled && !O.Mobile)                                                               I.createMenu.SettingMenuComponents.push("FullscreenButton");
     if(S["website-href"] && /^https?:\/\/[^\/]+/.test(S["website-href"]) && S["website-name-in-menu"]) I.createMenu.SettingMenuComponents.push("WebsiteLink");
     if(!S["remove-bibi-website-link"])                                                                 I.createMenu.SettingMenuComponents.push("BibiWebsiteLink");
-    if(I.createMenu.SettingMenuComponents.length) I.createMenu.createSettingMenu();
+    // if(I.createMenu.SettingMenuComponents.length) I.createMenu.createSettingMenu();
 
     E.dispatch("bibi:created-menu");
 
@@ -2815,175 +2815,175 @@ I.createMenu.createPanelSwitch = function() {
 };
 
 
-I.createMenu.createSettingMenu = function() {
-
-    I.Menu.Config = {};
-
-    // Button
-    I.Menu.Config.Button = I.createButtonGroup({ Area: I.Menu.R, Sticky: true }).addButton({
-        Type: "toggle",
-        Labels: {
-            default: { default: 'Setting', ja: '設定を変更' },
-            active:  { default: 'Close Setting-Menu', ja: '設定メニューを閉じる' }
-        },
-        Help: true,
-        Icon: '<span class="bibi-icon bibi-icon-setting"></span>'
-    });
-
-    // Sub Panel
-    I.Menu.Config.SubPanel = I.createSubPanel({ Opener: I.Menu.Config.Button, id: "bibi-subpanel_change-view" });
-
-    if(I.createMenu.SettingMenuComponents.includes("ViewModeButtons")                                                                   ) I.createMenu.createSettingMenu.createViewModeSection();
-    if(I.createMenu.SettingMenuComponents.includes("NewWindowButton") || I.createMenu.SettingMenuComponents.includes("FullscreenButton")) I.createMenu.createSettingMenu.createWindowSection();
-    if(I.createMenu.SettingMenuComponents.includes("WebsiteLink")     || I.createMenu.SettingMenuComponents.includes("BibiWebsiteLink") ) I.createMenu.createSettingMenu.createLinkageSection();
-
-};
-
-
-I.createMenu.createSettingMenu.createViewModeSection = function() {
-
-    // Shapes
-    var Shape = {};
-    Shape.Item         = '<span class="bibi-shape bibi-shape-item"></span>';
-    Shape.Spread       = '<span class="bibi-shape bibi-shape-spread">' + Shape.Item + Shape.Item + '</span>';
-
-    // Icons
-    var Icon = {};
-    Icon["paged"]      = '<span class="bibi-icon bibi-icon-view-paged"><span class="bibi-shape bibi-shape-spreads bibi-shape-spreads-paged">' + Shape.Spread + Shape.Spread + Shape.Spread + '</span></span>';
-    Icon["horizontal"] = '<span class="bibi-icon bibi-icon-view-horizontal"><span class="bibi-shape bibi-shape-spreads bibi-shape-spreads-horizontal">' + Shape.Spread + Shape.Spread + Shape.Spread + '</span></span>';
-    Icon["vertical"]   = '<span class="bibi-icon bibi-icon-view-vertical"><span class="bibi-shape bibi-shape-spreads bibi-shape-spreads-vertical">' + Shape.Spread + Shape.Spread + Shape.Spread + '</span></span>';
-
-    var changeView = function() {
-        R.changeView(this.Value);
-    };
-
-    I.Menu.Config.SubPanel.ViewModeSection = I.Menu.Config.SubPanel.addSection({
-        Labels: { default: { default: 'Choose Layout', ja: 'レイアウトを選択' } },
-        ButtonGroup: {
-            Buttons: [
-                {
-                    Type: "radio",
-                    Labels: {
-                        default: {
-                            default: '<span class="non-visual-in-label">Layout:</span> Each Page <small>(Flip with ' + (O.Mobile ? 'Tap/Swipe' : 'Click/Wheel') + ')</small>',
-                            ja: 'ページ単位表示<small>（' + (O.Mobile ? 'タップ／スワイプ' : 'クリック／ホイール') + 'で移動）</small>'
-                        }
-                    },
-                    Notes: true,
-                    Icon: Icon["paged"],
-                    Value: "paged",
-                    action: changeView
-                },
-                {
-                    Type: "radio",
-                    Labels: {
-                        default: {
-                            default: '<span class="non-visual-in-label">Layout:</span> All Pages <small>(Horizontal Scroll)</small>',
-                            ja: '全ページ表示<small>（横スクロール移動）</small>'
-                        }
-                    },
-                    Notes: true,
-                    Icon: Icon["horizontal"],
-                    Value: "horizontal",
-                    action: changeView
-                }
-            ]
-        }
-    });
-
-    E.add("bibi:updated-settings", function() {
-        I.Menu.Config.SubPanel.ViewModeSection.ButtonGroup.Buttons.forEach(function(Button) {
-            I.setUIState(Button, (Button.Value == S.RVM ? "active" : "default"));
-        });
-    });
-
-};
-
-
-I.createMenu.createSettingMenu.createWindowSection = function() {
-
-    var Buttons = [];
-
-    // New Window
-    if(I.createMenu.SettingMenuComponents.includes("NewWindowButton")) Buttons.push({
-        Type: "link",
-        Labels: {
-            default: { default: 'Open in New Window', ja: 'あたらしいウィンドウで開く' }
-        },
-        Icon: '<span class="bibi-icon bibi-icon-open-newwindow"></span>',
-        href: O.RequestedURL,
-        target: "_blank"
-    });
-
-    // Fullscreen
-    if(I.createMenu.SettingMenuComponents.includes("FullscreenButton")) Buttons.push({
-        Type: "toggle",
-        Labels: {
-            default: { default: 'Enter Fullscreen', ja: 'フルスクリーンモード' },
-            active:  { default: 'Exit Fullscreen', ja: 'フルスクリーンモード解除' }
-        },
-        Icon: '<span class="bibi-icon bibi-icon-toggle-fullscreen"></span>',
-        action: function() {
-            var Button = this;
-            if(!O.FullscreenElement.Fullscreen) {
-                sML.requestFullscreen(O.FullscreenElement);
-            } else {
-                sML.exitFullscreen(O.FullscreenDocument);
-            }
-            if(!O.FullscreenElement.Fullscreen) {
-                O.FullscreenElement.Fullscreen = true;
-                E.dispatch("bibi:requested-fullscreen");
-                sML.addClass(O.HTML, "fullscreen");
-            } else {
-                O.FullscreenElement.Fullscreen = false;
-                E.dispatch("bibi:exited-fullscreen");
-                sML.removeClass(O.HTML, "fullscreen");
-            }
-        }
-    });
-
-    I.Menu.Config.SubPanel.WindowSection = I.Menu.Config.SubPanel.addSection({
-        Labels: { default: { default: 'Window Operation', ja: 'ウィンドウ操作' } },
-        ButtonGroup: {
-            Buttons: Buttons
-        }
-    });
-
-};
-
-
-I.createMenu.createSettingMenu.createLinkageSection = function() {
-
-    var Buttons = [];
-
-    if(I.createMenu.SettingMenuComponents.includes("WebsiteLink")) Buttons.push({
-        Type: "link",
-        Labels: {
-            default: { default: S["website-name-in-menu"].replace(/&/gi, '&amp;').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') }
-        },
-        Icon: '<span class="bibi-icon bibi-icon-open-newwindow"></span>',
-        href: S["website-href"],
-        target: "_blank"
-    });
-
-    if(I.createMenu.SettingMenuComponents.includes("BibiWebsiteLink")) Buttons.push({
-        Type: "link",
-        Labels: {
-            default: { default: "BiB/i | Official Website" }
-        },
-        Icon: '<span class="bibi-icon bibi-icon-open-newwindow"></span>',
-        href: Bibi.SiteHref,
-        target: "_blank"
-    });
-
-    I.Menu.Config.SubPanel.addSection({
-        Labels: { default: { default: 'Link' + (Buttons.length > 1 ? 's' : ''), ja: 'リンク' } },
-        ButtonGroup: {
-            Buttons: Buttons
-        }
-    });
-
-};
+// I.createMenu.createSettingMenu = function() {
+//
+//     I.Menu.Config = {};
+//
+//     // Button
+//     I.Menu.Config.Button = I.createButtonGroup({ Area: I.Menu.R, Sticky: true }).addButton({
+//         Type: "toggle",
+//         Labels: {
+//             default: { default: 'Setting', ja: '設定を変更' },
+//             active:  { default: 'Close Setting-Menu', ja: '設定メニューを閉じる' }
+//         },
+//         Help: true,
+//         Icon: '<span class="bibi-icon bibi-icon-setting"></span>'
+//     });
+//
+//     // Sub Panel
+//     I.Menu.Config.SubPanel = I.createSubPanel({ Opener: I.Menu.Config.Button, id: "bibi-subpanel_change-view" });
+//
+//     if(I.createMenu.SettingMenuComponents.includes("ViewModeButtons")                                                                   ) I.createMenu.createSettingMenu.createViewModeSection();
+//     if(I.createMenu.SettingMenuComponents.includes("NewWindowButton") || I.createMenu.SettingMenuComponents.includes("FullscreenButton")) I.createMenu.createSettingMenu.createWindowSection();
+//     if(I.createMenu.SettingMenuComponents.includes("WebsiteLink")     || I.createMenu.SettingMenuComponents.includes("BibiWebsiteLink") ) I.createMenu.createSettingMenu.createLinkageSection();
+//
+// };
+//
+//
+// I.createMenu.createSettingMenu.createViewModeSection = function() {
+//
+//     // Shapes
+//     var Shape = {};
+//     Shape.Item         = '<span class="bibi-shape bibi-shape-item"></span>';
+//     Shape.Spread       = '<span class="bibi-shape bibi-shape-spread">' + Shape.Item + Shape.Item + '</span>';
+//
+//     // Icons
+//     var Icon = {};
+//     Icon["paged"]      = '<span class="bibi-icon bibi-icon-view-paged"><span class="bibi-shape bibi-shape-spreads bibi-shape-spreads-paged">' + Shape.Spread + Shape.Spread + Shape.Spread + '</span></span>';
+//     Icon["horizontal"] = '<span class="bibi-icon bibi-icon-view-horizontal"><span class="bibi-shape bibi-shape-spreads bibi-shape-spreads-horizontal">' + Shape.Spread + Shape.Spread + Shape.Spread + '</span></span>';
+//     Icon["vertical"]   = '<span class="bibi-icon bibi-icon-view-vertical"><span class="bibi-shape bibi-shape-spreads bibi-shape-spreads-vertical">' + Shape.Spread + Shape.Spread + Shape.Spread + '</span></span>';
+//
+//     var changeView = function() {
+//         R.changeView(this.Value);
+//     };
+//
+//     I.Menu.Config.SubPanel.ViewModeSection = I.Menu.Config.SubPanel.addSection({
+//         Labels: { default: { default: 'Choose Layout', ja: 'レイアウトを選択' } },
+//         ButtonGroup: {
+//             Buttons: [
+//                 {
+//                     Type: "radio",
+//                     Labels: {
+//                         default: {
+//                             default: '<span class="non-visual-in-label">Layout:</span> Each Page <small>(Flip with ' + (O.Mobile ? 'Tap/Swipe' : 'Click/Wheel') + ')</small>',
+//                             ja: 'ページ単位表示<small>（' + (O.Mobile ? 'タップ／スワイプ' : 'クリック／ホイール') + 'で移動）</small>'
+//                         }
+//                     },
+//                     Notes: true,
+//                     Icon: Icon["paged"],
+//                     Value: "paged",
+//                     action: changeView
+//                 },
+//                 {
+//                     Type: "radio",
+//                     Labels: {
+//                         default: {
+//                             default: '<span class="non-visual-in-label">Layout:</span> All Pages <small>(Horizontal Scroll)</small>',
+//                             ja: '全ページ表示<small>（横スクロール移動）</small>'
+//                         }
+//                     },
+//                     Notes: true,
+//                     Icon: Icon["horizontal"],
+//                     Value: "horizontal",
+//                     action: changeView
+//                 }
+//             ]
+//         }
+//     });
+//
+//     E.add("bibi:updated-settings", function() {
+//         I.Menu.Config.SubPanel.ViewModeSection.ButtonGroup.Buttons.forEach(function(Button) {
+//             I.setUIState(Button, (Button.Value == S.RVM ? "active" : "default"));
+//         });
+//     });
+//
+// };
+//
+//
+// I.createMenu.createSettingMenu.createWindowSection = function() {
+//
+//     var Buttons = [];
+//
+//     // New Window
+//     if(I.createMenu.SettingMenuComponents.includes("NewWindowButton")) Buttons.push({
+//         Type: "link",
+//         Labels: {
+//             default: { default: 'Open in New Window', ja: 'あたらしいウィンドウで開く' }
+//         },
+//         Icon: '<span class="bibi-icon bibi-icon-open-newwindow"></span>',
+//         href: O.RequestedURL,
+//         target: "_blank"
+//     });
+//
+//     // Fullscreen
+//     if(I.createMenu.SettingMenuComponents.includes("FullscreenButton")) Buttons.push({
+//         Type: "toggle",
+//         Labels: {
+//             default: { default: 'Enter Fullscreen', ja: 'フルスクリーンモード' },
+//             active:  { default: 'Exit Fullscreen', ja: 'フルスクリーンモード解除' }
+//         },
+//         Icon: '<span class="bibi-icon bibi-icon-toggle-fullscreen"></span>',
+//         action: function() {
+//             var Button = this;
+//             if(!O.FullscreenElement.Fullscreen) {
+//                 sML.requestFullscreen(O.FullscreenElement);
+//             } else {
+//                 sML.exitFullscreen(O.FullscreenDocument);
+//             }
+//             if(!O.FullscreenElement.Fullscreen) {
+//                 O.FullscreenElement.Fullscreen = true;
+//                 E.dispatch("bibi:requested-fullscreen");
+//                 sML.addClass(O.HTML, "fullscreen");
+//             } else {
+//                 O.FullscreenElement.Fullscreen = false;
+//                 E.dispatch("bibi:exited-fullscreen");
+//                 sML.removeClass(O.HTML, "fullscreen");
+//             }
+//         }
+//     });
+//
+//     I.Menu.Config.SubPanel.WindowSection = I.Menu.Config.SubPanel.addSection({
+//         Labels: { default: { default: 'Window Operation', ja: 'ウィンドウ操作' } },
+//         ButtonGroup: {
+//             Buttons: Buttons
+//         }
+//     });
+//
+// };
+//
+//
+// I.createMenu.createSettingMenu.createLinkageSection = function() {
+//
+//     var Buttons = [];
+//
+//     if(I.createMenu.SettingMenuComponents.includes("WebsiteLink")) Buttons.push({
+//         Type: "link",
+//         Labels: {
+//             default: { default: S["website-name-in-menu"].replace(/&/gi, '&amp;').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') }
+//         },
+//         Icon: '<span class="bibi-icon bibi-icon-open-newwindow"></span>',
+//         href: S["website-href"],
+//         target: "_blank"
+//     });
+//
+//     if(I.createMenu.SettingMenuComponents.includes("BibiWebsiteLink")) Buttons.push({
+//         Type: "link",
+//         Labels: {
+//             default: { default: "BiB/i | Official Website" }
+//         },
+//         Icon: '<span class="bibi-icon bibi-icon-open-newwindow"></span>',
+//         href: Bibi.SiteHref,
+//         target: "_blank"
+//     });
+//
+//     I.Menu.Config.SubPanel.addSection({
+//         Labels: { default: { default: 'Link' + (Buttons.length > 1 ? 's' : ''), ja: 'リンク' } },
+//         ButtonGroup: {
+//             Buttons: Buttons
+//         }
+//     });
+//
+// };
 
 
 I.createButtonGroup = function(Par) { // classifies ButtonGroup
