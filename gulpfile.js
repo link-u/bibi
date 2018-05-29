@@ -33,8 +33,8 @@ S.Extensions = [
     "fontsize",
     "jatex",
     "overreflow",
-    "share",
-    "shareandroid",
+  /* "share",
+   * "shareandroid",*/
     "unaccessibilizer",
     "unzipper"
 ];

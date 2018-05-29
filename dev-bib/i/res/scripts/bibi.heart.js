@@ -1029,15 +1029,7 @@ L.postprocessItem = function(Item) {
     sML.addClass(Item.HTML, sML.Environments.join(" "));
     sML.each(Item.Body.querySelectorAll("link"), function() { Item.Head.appendChild(this); });
 
-    if(S["epub-additional-stylesheet"]) {
-        Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: S["epub-additional-stylesheet"] }));
-    } else {
-        if (sML.OS.iOS) {
-            Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "res/styles/epub-additional-ios.css" }));
-        } else {
-            Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "res/styles/epub-additional.css" }));
-        }
-    }
+    if(S["epub-additional-stylesheet"]) Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: S["epub-additional-stylesheet"] }));
     if(S["epub-additional-script"])     Item.Head.appendChild(sML.create("script", { src: S["epub-additional-script"] }));
 
     Item.StyleSheets = [];
