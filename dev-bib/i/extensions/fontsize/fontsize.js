@@ -18,6 +18,10 @@ Bibi.x({
 
 })(function() {
 
+    if (sML.OS.Android && sML.OS.Android <= 4) {
+        return false;
+    }
+
     if(typeof X.Presets.FontSize["scale-per-step"] != "number" || X.Presets.FontSize["scale-per-step"] <= 1) X.Presets.FontSize["scale-per-step"] = 1.25;
 
     if(S["use-cookie"]) {
