@@ -228,6 +228,7 @@ gulp.task('make: bibi.js', function() {
         src: [
 			'dev-bib/i/res/scripts/_banner.js',
 			'dev-bib/i/res/scripts/_lib/bower_components.js',
+            'dev-bib/i/res/scripts/_lib/domparser_html_extension.js',
 			'dev-bib/i/res/scripts/bibi.heart.js'
         ],
         dist: 'bib/i/res/scripts/bibi.js'
