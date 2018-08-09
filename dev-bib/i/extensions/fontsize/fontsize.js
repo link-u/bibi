@@ -17,8 +17,7 @@ Bibi.x({
     build: Bibi["build"]
 
 })(function() {
-
-    if (sML.OS.Android && sML.OS.Android <= 4) {
+    if (sML.OS.Android && sML.OS.Android < 5) {
         return false;
     }
 
