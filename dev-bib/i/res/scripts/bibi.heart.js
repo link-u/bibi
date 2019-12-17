@@ -1115,9 +1115,9 @@ L.postprocessItem = (Item) => {
             Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: S["epub-additional-stylesheet"] }));
         } else {
             if (sML.OS.iOS) {
-                Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "res/styles/epub-additional-ios.css" }));
+                Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "/res/styles/epub-additional-ios.css" }));
             } else {
-                Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "res/styles/epub-additional.css" }));
+                Item.Head.appendChild(sML.create("link",   { rel: "stylesheet", href: O.RootPath + "/res/styles/epub-additional.css" }));
             }
         }
         if(S["epub-additional-script"])     Item.Head.appendChild(sML.create("script", { src: S["epub-additional-script"] }));
