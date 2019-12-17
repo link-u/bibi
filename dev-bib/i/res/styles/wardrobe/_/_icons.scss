@@ -48,6 +48,14 @@
 	}
 }
 
+@mixin GENERALICON__Back() {
+	&:before {
+		content: "arrow_back";
+		top: 1px;
+		text-indent: -1px;
+	}
+}
+
 // [ja] ３種の拡大／縮小アイコンすべてに適用される共通スタイル
 @mixin GENERALICON__LoupeCommon() {
 	&:before {
