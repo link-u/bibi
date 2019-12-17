@@ -13,17 +13,18 @@ Icon
 node_modules
 npm-debug.log
 
-# Bower
-# --------------------------------------------------------------------------------
-bower_components
-
 # BiB/i: Compiled CSS/JavaScript files
 # --------------------------------------------------------------------------------
 bib/i/extensions
-bib/i/res/styles
 bib/i/res/scripts
+bib/i/res/styles
+bib/i/res/fonts
 bib/i.css
 bib/i.js
+
+# BiB/i: Dress Templates
+# --------------------------------------------------------------------------------
+dev-bib/i/res/styles/wardrobe/--dress-template--**
 
 # BiB/i: Bookshelf
 # --------------------------------------------------------------------------------
@@ -32,10 +33,14 @@ bib/bookshelf/*
 dev-bib/bookshelf/*
 !dev-bib/bookshelf/.gitkeep
 
+# BiB/i: Copies of LICENSE & README.md
+# --------------------------------------------------------------------------------
+bib/LICENSE
+bib/README.md
 
 # Others
 # --------------------------------------------------------------------------------
 archives/*
 *.zip
+**/*.demo.*
 ____IGNORE____
-
