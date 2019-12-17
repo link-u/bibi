@@ -188,6 +188,7 @@
 .bibi-icon-config,
 .bibi-icon-change-fontsize,
 .bibi-icon-loupe,
+.bibi-icon-back,
 // -- In Subpanel
 .bibi-icon-full-breadth-layout,
 .bibi-icon-toggle-fullscreen,
@@ -200,7 +201,8 @@
 
 .bibi-icon-config,
 .bibi-icon-change-fontsize,
-.bibi-icon-loupe { @include GENERALICON__CommonInMenu(); }
+.bibi-icon-loupe,
+.bibi-icon-back { @include GENERALICON__CommonInMenu(); }
 
 .bibi-icon-config { @include GENERALICON__Config(); }
 

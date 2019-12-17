@@ -51,8 +51,6 @@
 @mixin GENERALICON__Back() {
 	&:before {
 		content: "arrow_back";
-		top: 1px;
-		text-indent: -1px;
 	}
 }
 
