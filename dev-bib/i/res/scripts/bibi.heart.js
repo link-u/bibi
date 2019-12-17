@@ -4590,6 +4590,7 @@ O.error = (Msg) => {
     O.HTML.classList.remove('loading');
     O.HTML.classList.remove('waiting');
     E.dispatch('bibi:x_x', Msg);
+    // sqex: 端末にエラーのEventを返す
     M.sendEventToNative('read_error');
     O.log(Msg, '<e/>');
 };
@@ -4660,6 +4661,7 @@ O.download = (Item/*, Opt = {}*/) => new Promise((resolve, reject) => {
     const XHR = new XMLHttpRequest(); //if(Opt.MimeType) XHR.overrideMimeType(Opt.MimeType);
     const RemotePath = (/^([a-z]+:\/\/|\/)/.test(Item.Path) ? '' : B.Path + '/') + Item.Path;
     XHR.open('GET', RemotePath, true); // async
+    // sqex: ダウンロード時のタイムアウト設ける
     XHR.timeout = 10000;
     XHR.responseType = IsBin ? 'blob' : 'text';
     XHR.onerror   = () => reject(`${ XHR.status === 404 ? 'File Not Found' : 'Could Not Download File' }: "${ RemotePath }"`);
