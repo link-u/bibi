@@ -85,7 +85,7 @@ Bibi.preset({
     //{ "src": "extensions/analytics/index.js", "tracking-id": "" }, // "tracking-id": Your own Google Analytics tracking id, as "UA-********-*"
     //{ "src": "extensions/epubcfi/index.js" },
     //{ "src": "extensions/unaccessibilizer/index.js", "select-elements": "prevent", "save-images": "prevent", "use-contextmenu": "prevent" },
-    { "name": "ShareAndroid", "src" : "extensions/share/shareandroid.js" }
+    { "name": "ShareAndroid", "src" : "extensions/shareandroid/shareandroid.js" }
 ], // "id" must be defined in each script. "Unzipper", "Zine", and "Bibi" are reserved for "id".
 
 
