@@ -1178,10 +1178,15 @@ L.loadItem = (Item, Opt = {}) => {
             O.file(Item.Source, {
                 Preprocess: (B.ExtractionPolicy || sML.UA.Gecko), // Preprocess if archived (or Gecko. For such books as styled only with -webkit/epub- prefixed properties. It's NOT Gecko's fault but requires preprocessing.)
                 initialize: () => {
-                    if(!S['allow-scripts-in-content']) {
-                        Item.Source.Content = Item.Source.Content.replace(/<script(\s+[\w\-]+(\s*=\s*('[^'']*'|"[^""]*"))?)*\s*\/>/ig, '');
-                        O.sanitizeItemSource(Item.Source, { As: 'HTML' });
-                    }
+                    // NOTE: LinkU社内マンガアプリ用修正
+                    // 最終ページで<script>タグを動かす必要があるので無効化部分をコメントアウトしている。
+                    // presets/default.js の "allow-scripts-in-content" を trueにすることで無効化を実現したほうがコード修正なしで実現できてよさそうだったが、
+                    // ”Cannot read properties of undefined  "sML." CSS.setStyle” というエラーが吐かれてしまうので、コード修正で対応することにした。
+
+                    // if(!S['allow-scripts-in-content']) {
+                    //     Item.Source.Content = Item.Source.Content.replace(/<script(\s+[\w\-]+(\s*=\s*('[^'']*'|"[^""]*"))?)*\s*\/>/ig, '');
+                    //     O.sanitizeItemSource(Item.Source, { As: 'HTML' });
+                    // }
                 }
             }).then(ItemSource =>
                 ItemSource.Content
@@ -3683,12 +3688,12 @@ I.Panel = { create: () => {
     const Opener = Panel.Opener = I.Menu.L.addButtonGroup({ Sticky: true }).addButton({
         Type: 'toggle',
         Labels: {
-            default: { default: `Open Index`,  ja: `目次を開く`   },
-            active:  { default: `Close Index`, ja: `目次を閉じる` }
+            default: { default: `Close Viewer`,  ja: `閉じる`   },
+            active:  { default: `Invalid`, ja: `想定外の状態です` }
         },
         Help: true,
-        Icon: `<span class="bibi-icon bibi-icon-toggle-panel">${ (Bars => { for(let i = 1; i <= 6; i++) Bars += '<span></span>'; return Bars; })('') }</span>`,
-        action: () => Panel.toggle()
+        Icon: `<span class="bibi-icon bibi-icon-back">`,
+        action: () => M.sendEventToNative('close')
     });
     E.add('bibi:opened-panel', () => I.setUIState(Opener, 'active'            ));
     E.add('bibi:closed-panel', () => I.setUIState(Opener, ''                  ));
@@ -6072,6 +6077,16 @@ M.receive = (Eve) => {
     if(!Data || typeof Data != 'object') return false;
     for(const EventName in Data) if(/^bibi:commands:/.test(EventName)) E.dispatch(EventName, Data[EventName]);
     return true; } catch(Err) {} return false;
+};
+
+
+M.sendEventToNative = (methodName) => {
+    if (sML.OS.Android) {
+        android[methodName]();
+    } else if (sML.OS.iOS) {
+        window.webkit.messageHandlers[methodName].postMessage(methodName);
+    }
+    console.log(navigator.userAgent, methodName);
 };
 
 

@@ -95,6 +95,12 @@
 	}
 }
 
+@mixin GENERALICON__ManageBack() {
+	&:before {
+		content: "arrow_back";
+	}
+}
+
 
 // - General Icons in Slider
 // --------------------------------------------------------------------------------

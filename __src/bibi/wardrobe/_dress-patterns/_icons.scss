@@ -235,6 +235,7 @@
 .bibi-icon-change-fontsize,
 .bibi-icon-loupe,
 .bibi-icon-manage-bookmarks,
+.bibi-icon-back,
 // -- In Slider
 .bibi-icon-history,
 // -- In Subpanel
@@ -251,7 +252,8 @@
 .bibi-icon-config,
 .bibi-icon-change-fontsize,
 .bibi-icon-loupe,
-.bibi-icon-manage-bookmarks { @include GENERALICON__CommonInMenu(); }
+.bibi-icon-manage-bookmarks,
+.bibi-icon-back { @include GENERALICON__CommonInMenu(); }
 
 .bibi-icon-config { @include GENERALICON__Config(); }
 
@@ -264,6 +266,8 @@
 }
 
 .bibi-icon-manage-bookmarks { @include GENERALICON__ManageBookmarks(); }
+
+.bibi-icon-back { @include GENERALICON__ManageBack(); }
 
 
 // - General Icons in Slider
