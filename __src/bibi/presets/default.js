@@ -17,7 +17,7 @@ Bibi.preset({
 "fix-reader-view-mode"          : "no", // "yes" or "no" or "desktop" or "mobile"
 
 "keep-settings"                 : "yes", // "yes" or "no" or "desktop" or "mobile"
-"resume-from-last-position"     : "yes", // "yes" or "no" or "desktop" or "mobile"
+"resume-from-last-position"     : "no", // "yes" or "no" or "desktop" or "mobile"
 
 "autostart"                     : "yes", // "yes" or "no" or "desktop" or "mobile"
 "autostart-embedded"            : "no", // "yes" or "no" or "desktop" or "mobile" (It takes priority over "autostart" when the book is embedded in a webpage)
